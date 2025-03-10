@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { Provider } from 'react-redux';
+import { store } from './store';
+import CertificationForm from './components/CertificationForm';
+import CertificationList from './components/CertificationList';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <div className="container py-4">
+        <div className="row justify-content-center">
+          <div className="col-12 col-md-8 col-lg-6">
+            <h2 className="text-center mb-1">Skills-Based Certifications</h2>
+            <p className="text-center text-muted mb-4">(You can add upto 5 certifications)</p>
+            
+            <CertificationList />
+            <CertificationForm />
+          </div>
+        </div>
+      </div>
+    </Provider>
   );
-}
+};
 
 export default App;
