@@ -1,6 +1,6 @@
-# Installation Instructions for Skills-Based Certifications (Vite)
+# Installation Instructions
 
-Follow these step-by-step instructions to set up and run the Skills-Based Certifications application built with Vite on your local machine.
+Follow these step-by-step instructions to set up and run the Certifications application built with Vite on your local machine.
 
 ## Prerequisites
 
