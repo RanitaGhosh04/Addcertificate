@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { addCertification, hideSuccess } from '../store/certificationSlice';
 import { Certification, ValidationErrors } from '../types';
@@ -7,6 +8,7 @@ import { RootState } from '../store';
 
 function CertificationForm() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { showSuccess, certifications } = useSelector((state: RootState) => state.certification);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
@@ -19,7 +21,7 @@ function CertificationForm() {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [fileName, setFileName] = useState<string>('');
 
-  // Check if max certifications limit reached
+  
   const isMaxCertificationsReached = certifications.length >= 5;
 
   const validateForm = (): boolean => {
@@ -48,7 +50,7 @@ function CertificationForm() {
       [name]: value
     });
     
-    // Clear error when user starts typing
+    
     if (errors[name as keyof ValidationErrors]) {
       setErrors({
         ...errors,
@@ -63,7 +65,6 @@ function CertificationForm() {
       const file = files[0];
       const fileType = file.type;
       
-      // Check if file is PDF or JPG
       if (fileType === 'application/pdf' || fileType === 'image/jpeg') {
         setFormData({
           ...formData,
@@ -71,7 +72,6 @@ function CertificationForm() {
         });
         setFileName(file.name);
         
-        // Clear file error if exists
         if (errors.file) {
           setErrors({
             ...errors,
@@ -85,14 +85,14 @@ function CertificationForm() {
   };
 
   const handleUploadClick = () => {
-    // Trigger the file input click
+   
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
 
   const handleLabelClick = () => {
-    // Also trigger file input when label is clicked
+    
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -107,7 +107,6 @@ function CertificationForm() {
     }
     
     if (validateForm() && formData.file) {
-      // Create a URL for the file
       const fileUrl = URL.createObjectURL(formData.file);
       
       dispatch(addCertification({
@@ -118,7 +117,6 @@ function CertificationForm() {
         fileUrl
       }));
       
-      // Reset form
       setFormData({
         name: '',
         issuer: '',
@@ -150,6 +148,16 @@ function CertificationForm() {
             </a>
             <a 
               href="#" 
+              className="text-success me-3"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/list');
+              }}
+            >
+              View all
+            </a>
+            <a 
+              href="#" 
               className="text-success"
               onClick={(e) => {
                 e.preventDefault();
@@ -164,7 +172,6 @@ function CertificationForm() {
     );
   }
 
-  // Disable form if max certifications reached
   if (isMaxCertificationsReached && !showSuccess) {
     return (
       <div className="card border-0 shadow-sm">
